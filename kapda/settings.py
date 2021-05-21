@@ -182,3 +182,6 @@ STATIC_URL = '/static/'
 # - api/v1/auth/jwt/create/
 # - api/v1/auth/jwt/refresh/
 # - api/v1/auth/jwt/verify/
+
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR/'media'
