@@ -23,3 +23,5 @@ Run ```python manage.py migrate``` to create database table and create superuser
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
+
+
