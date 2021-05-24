@@ -1,0 +1,30 @@
+------ users ---------------
+
+
+# - api/v1/auth/users -- create/list
+# - api/v1/auth/users/me/ - detail
+# - api/v1/auth/users/activation/ -- activate
+# - api/v1/auth/users/resend_activation/ 
+# - api/v1/auth/users/reset_password/ 
+# - api/v1/auth/users/reset_password_confirm/
+# - api/v1/auth/users/reset_email/
+# - api/v1/auth/users/reset_email_confirm/
+# - api/v1/auth/users/set_password/ -- change password
+# - api/v1/auth/users/set_email/ -- change-email
+# - api/v1/auth/jwt/create/
+# - api/v1/auth/jwt/refresh/
+# - api/v1/auth/jwt/verify/
+
+
+-------- shop -------------------
+
+api/v1/shop/category - list/detail
+api/v1/shop/products -list/detail + ?category=&_type=&min_price=&max_price=&size=&color=&material=&brand=
+api/v1/filters -list/ + ?category= 
+                        
+
+----------- cart ------------------
+
+
+api/v1/cart/wishlist/ - list/detail(GET)
+api/v1/cart/wishlist/ - POST(action,product)
