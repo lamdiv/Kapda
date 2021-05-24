@@ -42,7 +42,9 @@ INSTALLED_APPS = [
     'djoser',
     'users',
     'shop',
-    'django_filters'
+    'cart',
+    'django_filters',
+
 ]
 
 MIDDLEWARE = [
@@ -98,7 +100,7 @@ REST_FRAMEWORK = {
 from datetime import timedelta
 
 SIMPLE_JWT = {
-   'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+   'ACCESS_TOKEN_LIFETIME': timedelta(minutes=240),
    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
    'AUTH_HEADER_TYPES': ('JWT',),
 }

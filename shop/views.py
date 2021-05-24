@@ -86,7 +86,6 @@ class FilterViewset(viewsets.ViewSet):
         filters['material'] = mat
         filters['brand'] = brnd
         
-
         serializer = FilterSerializer(filters)
         return Response (serializer.data, status=status.HTTP_200_OK)
 
