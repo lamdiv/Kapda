@@ -75,7 +75,7 @@ class CartViewSet(mixins.CreateModelMixin,
                 color = product.color.all()
 
                 if size:
-                    size = size.get(id=serializer.data['color'])
+                    size = size.get(id=serializer.data['size'])
                 else:
                     size = None
 
@@ -87,18 +87,17 @@ class CartViewSet(mixins.CreateModelMixin,
 
                 quantity = serializer.data['quantity']
                 
-                price = product.price
-
                 item,created = CartItem.objects.get_or_create(cart=cart,
                                                product=product,
                                                size=size,
                                                color=color,
-                                               price=price)
+                                               price = product.price                                            
+                                               )
                 if created:
                     item.quantity = quantity
                 else:
                     item.quantity += quantity
-
+                
                 item.save()
 
 
@@ -114,12 +113,11 @@ class CartViewSet(mixins.CreateModelMixin,
         if serializer.is_valid():
             try:
                 product = Product.objects.get(id=serializer.data['product'],available=True)
-                
                 size = product.size.all()
                 color = product.color.all()
 
                 if size:
-                    size = size.get(id=serializer.data['color'])
+                    size = size.get(id=serializer.data['size'])
                 else:
                     size = None
 
@@ -129,11 +127,9 @@ class CartViewSet(mixins.CreateModelMixin,
                     color = None
 
                 item = get_object_or_404(CartItem,pk=pk,cart__user=self.request.user)
-
                 quantity = serializer.data['quantity']
-
+                print(quantity)
                 item.quantity = quantity
-                item.size = size
                 item.color = color
                 item.save()
 
