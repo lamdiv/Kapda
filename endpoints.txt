@@ -28,3 +28,4 @@ api/v1/filters -list/ + ?category=
 
 api/v1/cart/wishlist/ - list/detail(GET)
 api/v1/cart/wishlist/ - POST(action,product)
+

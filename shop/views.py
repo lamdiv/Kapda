@@ -53,6 +53,7 @@ class ProductViewset(viewsets.ModelViewSet):
         return [permission() for permission in permission_classes]
 
 
+
 class FilterViewset(viewsets.ViewSet):
 
     def list(self, request, *args, **kwargs):

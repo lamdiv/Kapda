@@ -170,20 +170,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-# - api/v1/auth/users/ (list)
-# - api/v1/auth/users/activation/
-# - api/v1/auth/users/resend_activation/
-# - api/v1/auth/users/me/
-# - api/v1/auth/users/ (detail)
-# - api/v1/auth/users/reset_password/
-# - api/v1/auth/users/reset_password_confirm/
-# - api/v1/auth/users/reset_email/
-# - api/v1/auth/users/reset_email_confirm/
-# - api/v1/auth/users/set_password/
-# - api/v1/auth/users/set_email/
-# - api/v1/auth/jwt/create/
-# - api/v1/auth/jwt/refresh/
-# - api/v1/auth/jwt/verify/
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR/'media'
