@@ -29,9 +29,9 @@ api/v1/filters -list/ + ?category=
 api/v1/cart/wishlist/ - list/detail(GET)
 api/v1/cart/wishlist/ - POST(action,product)
 
-api/v1/cart/cart/ - list/detail(GET)
-api/v1/cart/cart/ - POST(product,quantity,size,color)
-api/v1/cart/cart/ - PUT(product,quantity,size,color)
-api/v1/cart/cart/ - DELETE
+api/v1/cart/order/ - list/detail(GET)
+api/v1/cart/order/ - POST(product,quantity,size,color)
+api/v1/cart/order/ - PUT(product,quantity,size,color)
+api/v1/cart/order/ - DELETE
 
-
+api/v1/cart/coupon/ - POST(code)
