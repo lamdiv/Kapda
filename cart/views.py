@@ -3,10 +3,12 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework import status
 from rest_framework.response import Response
-from .serializers import WishListSerializer,UpdateWishListSerializer,CartItemSerializer,CartCreateSerializer
-from .models import WishList,OrderItem,Order
+from .serializers import (WishListSerializer,UpdateWishListSerializer,CartItemSerializer,CartCreateSerializer,
+                        CouponSerializer,CouponApplySerializer)
+from .models import WishList,OrderItem,Order,Coupon
 from shop.models import Product,Color,Size
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 
 from rest_framework import mixins
 
@@ -141,7 +143,7 @@ class CartViewSet(mixins.CreateModelMixin,
             return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self,request,pk):
-        item = get_object_or_404(OrderItem,pk=pk,cart__user=self.request.user,cart__is_complete=False)
+        item = get_object_or_404(OrderItem,pk=pk,order__user=self.request.user,order__is_complete=False)
         item.delete()
         return Response({'status':'successfully deleted'})
 
@@ -150,3 +152,25 @@ class CartViewSet(mixins.CreateModelMixin,
             return CartCreateSerializer
         else:
             return CartItemSerializer
+
+
+class CouponViewSet(mixins.CreateModelMixin,viewsets.GenericViewSet):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = CouponApplySerializer
+
+    def create(self,request):
+        serializer = CouponApplySerializer(data=request.data)
+        if serializer.is_valid():
+            try:    
+                code = serializer.data['code']
+                now = timezone.now()
+                coupon = Coupon.objects.get(code__iexact=code,
+                                            valid_from__lte=now,
+                                            valid_to__gte=now,
+                                            active=True)
+                serializer = CouponSerializer(coupon)
+                return Response(serializer.data)
+            except Coupon.DoesNotExist:
+                return Response({'status':'coupon isn\'t valid'})
+        else:
+            return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)

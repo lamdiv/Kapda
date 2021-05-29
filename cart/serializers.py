@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import WishList,Order,OrderItem
+from .models import WishList,Order,OrderItem,Coupon
 from shop.models import Product,Size,Color
 from shop.serializers import ProductSerializer,ColorSerializer,SizeSerializer
 
@@ -33,10 +33,17 @@ class CartItemSerializer(serializers.ModelSerializer):
 
 class CartCreateSerializer(serializers.ModelSerializer):
     product = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all())
-    color = serializers.PrimaryKeyRelatedField(queryset=Color.objects.all())
+    color = serializers.PrimaryKeyRelatedField(queryset=Color.objects.all(),required=False)
     size = serializers.PrimaryKeyRelatedField(queryset=Size.objects.all(),required=False)
 
     class Meta:
         model = OrderItem
         fields = ['id','product','color','size','quantity']
 
+class CouponApplySerializer(serializers.Serializer):
+    code = serializers.CharField()
+
+class CouponSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Coupon
+        fields = ['id','code','discount']

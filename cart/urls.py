@@ -1,11 +1,12 @@
 from django.urls import path,include
 from rest_framework import routers
-from .views import WishListViewSet,CartViewSet
+from .views import WishListViewSet,CartViewSet,CouponViewSet
 
 router = routers.DefaultRouter()
 
 router.register(r'wishlist', WishListViewSet, basename="wishlist")
-router.register(r'cart', CartViewSet, basename="cart")
+router.register(r'order', CartViewSet, basename="order")
+router.register(r'coupon', CouponViewSet, basename="coupon")
 
 app_name = 'cart'
 
