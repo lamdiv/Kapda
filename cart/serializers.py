@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import WishList,Cart,CartItem
+from .models import WishList,Order,OrderItem
 from shop.models import Product,Size,Color
 from shop.serializers import ProductSerializer,ColorSerializer,SizeSerializer
 
@@ -27,7 +27,7 @@ class CartItemSerializer(serializers.ModelSerializer):
     size = SizeSerializer(read_only=True)
 
     class Meta:
-        model = CartItem
+        model = OrderItem
         fields = ['id','product','color','size','get_cost','quantity']
         read_only_fields = ['id','get_cost','quantity']
 
@@ -37,6 +37,6 @@ class CartCreateSerializer(serializers.ModelSerializer):
     size = serializers.PrimaryKeyRelatedField(queryset=Size.objects.all(),required=False)
 
     class Meta:
-        model = CartItem
+        model = OrderItem
         fields = ['id','product','color','size','quantity']
 

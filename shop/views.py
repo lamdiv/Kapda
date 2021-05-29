@@ -59,6 +59,7 @@ class FilterViewset(viewsets.ViewSet):
     def list(self, request, *args, **kwargs):
         filters = {}
 
+        #TODO: Optimization
         cat = Category.objects.all()
         typ = Type.objects.all()
         col = Color.objects.all()
@@ -67,7 +68,7 @@ class FilterViewset(viewsets.ViewSet):
         size = Size.objects.all()
 
         category_params = self.request.query_params.get('category')
-        _type = self.request.query_params.get('type')
+        # _type = self.request.query_params.get('type')
         
         if category_params is not None:   
             category = get_object_or_404(Category,name=category_params)

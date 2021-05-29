@@ -9,14 +9,15 @@ class WishList(models.Model):
     def __str__(self):
         return self.user.email + ' wishlist'
 
-class Cart(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
+class Order(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
+    is_complete = models.BooleanField(default=False)
 
     def __str__(self):
         return self.user.email + ' cart'
 
-class CartItem(models.Model):
-    cart = models.ForeignKey(Cart,related_name="items",on_delete=models.CASCADE)
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order,related_name="items",on_delete=models.CASCADE)
     product = models.ForeignKey(Product,on_delete=models.CASCADE)
     size = models.ForeignKey(Size,on_delete=models.CASCADE,blank=True,null=True)
     color = models.ForeignKey(Color,on_delete=models.CASCADE,blank=True,null=True)
@@ -28,3 +29,7 @@ class CartItem(models.Model):
     
     def get_cost(self):
         return self.quantity*self.product.price
+
+
+
+

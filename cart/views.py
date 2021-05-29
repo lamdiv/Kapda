@@ -4,7 +4,7 @@ from rest_framework.decorators import action
 from rest_framework import status
 from rest_framework.response import Response
 from .serializers import WishListSerializer,UpdateWishListSerializer,CartItemSerializer,CartCreateSerializer
-from .models import WishList,CartItem,Cart
+from .models import WishList,OrderItem,Order
 from shop.models import Product,Color,Size
 from django.shortcuts import get_object_or_404
 
@@ -62,13 +62,13 @@ class CartViewSet(mixins.CreateModelMixin,
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return CartItem.objects.filter(cart__user=self.request.user)
+        return OrderItem.objects.filter(order__user=self.request.user,order__is_complete=False)
 
     def create(self,request):
         serializer = CartCreateSerializer(data=request.data)
         if serializer.is_valid():
             try:
-                cart,create = Cart.objects.get_or_create(user=self.request.user)
+                order,create = Order.objects.get_or_create(user=self.request.user,is_complete=False)
                 product = Product.objects.get(id=serializer.data['product'],available=True)
                 
                 size = product.size.all()
@@ -87,7 +87,7 @@ class CartViewSet(mixins.CreateModelMixin,
 
                 quantity = serializer.data['quantity']
                 
-                item,created = CartItem.objects.get_or_create(cart=cart,
+                item,created = OrderItem.objects.get_or_create(order=order,
                                                product=product,
                                                size=size,
                                                color=color,
@@ -126,7 +126,7 @@ class CartViewSet(mixins.CreateModelMixin,
                 else:
                     color = None
 
-                item = get_object_or_404(CartItem,pk=pk,cart__user=self.request.user)
+                item = get_object_or_404(OrderItem,pk=pk,order__user=self.request.user,order__is_complete=False)
                 quantity = serializer.data['quantity']
                 print(quantity)
                 item.quantity = quantity
@@ -141,7 +141,7 @@ class CartViewSet(mixins.CreateModelMixin,
             return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self,request,pk):
-        item = get_object_or_404(CartItem,pk=pk,cart__user=self.request.user)
+        item = get_object_or_404(OrderItem,pk=pk,cart__user=self.request.user,cart__is_complete=False)
         item.delete()
         return Response({'status':'successfully deleted'})
 
