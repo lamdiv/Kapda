@@ -1,13 +1,13 @@
-from rest_framework import viewsets
-from rest_framework import permissions
+from rest_framework import viewsets,permissions,status
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django_filters import rest_framework as filters
-from rest_framework import status
-
+from rest_framework.decorators import action
 from .models import Category,Type,Color,Material,Brand,Product,Size
 from .serializers import (CategorySerializer,ProductSerializer,FilterSerializer)
 
+from review.models import Question,Answer
+from review.serializers import QuestionSerializer,QuestionReSerializer
 
 class CategoryViewset(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
@@ -52,7 +52,13 @@ class ProductViewset(viewsets.ModelViewSet):
             permission_classes = [permissions.IsAdminUser]
         return [permission() for permission in permission_classes]
 
-
+    @action(detail=True,methods=['get'])
+    def question(self, request, pk=None):
+        product = self.get_object()
+        questions = product.question.filter(active=True,product=product)
+        serailizer = QuestionReSerializer(questions,many=True)
+        return Response(serailizer.data)
+        
 
 class FilterViewset(viewsets.ViewSet):
 

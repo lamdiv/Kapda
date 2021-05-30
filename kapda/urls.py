@@ -1,4 +1,3 @@
-
 from django.contrib import admin
 from django.urls import path,include
 from django.conf import settings
@@ -9,8 +8,7 @@ urlpatterns = [
     path('api/v1/auth/',include('users.urls')),
     path('api/v1/cart/',include('cart.urls')),
     path('api/v1/shop/',include('shop.urls')),
-    
-    
+    path('api/v1/review/',include('review.urls'))
     
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
 
