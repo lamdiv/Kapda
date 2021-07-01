@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from .models import Category,Type,Color,Material,Brand,Product,Size
-from review.models import Question
 
 
 class CategorySerializer(serializers.ModelSerializer):

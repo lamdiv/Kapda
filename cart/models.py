@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from shop.models import Product,Size,Color
 from django.core.validators import MinValueValidator,MaxValueValidator
+from review.models import Rating
 
 class WishList(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
@@ -31,9 +32,9 @@ class Order(models.Model):
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
     order_id = models.CharField(max_length=54,null=True)
+    is_complete = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True,null=True)
     updated = models.DateTimeField(auto_now=True)
-    is_complete = models.BooleanField(default=False)
     is_paid = models.BooleanField(default=False)
     is_shipped = models.BooleanField(default=False)
     is_delivered = models.BooleanField(default=False)
@@ -55,6 +56,12 @@ class Order(models.Model):
         total_cost = sum(item.get_cost() for item in self.items.all())
         return total_cost - total_cost * (self.discount / Decimal(100))
 
+
+    def save(self,*args,**kwargs):
+        if self.is_delivered:
+            for item in self.items.all():
+                Rating.objects.get_or_create(user=self.user,product=item.product)
+        super().save(*args,**kwargs)
 
 
 class OrderItem(models.Model):

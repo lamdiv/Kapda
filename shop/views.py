@@ -7,7 +7,7 @@ from .models import Category,Type,Color,Material,Brand,Product,Size
 from .serializers import (CategorySerializer,ProductSerializer,FilterSerializer)
 
 from review.models import Question,Answer
-from review.serializers import QuestionSerializer,QuestionReSerializer
+from review.serializers import QuestionSerializer,QuestionReSerializer,RatingSerializer
 
 class CategoryViewset(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
@@ -58,6 +58,21 @@ class ProductViewset(viewsets.ModelViewSet):
         questions = product.question.filter(active=True,product=product)
         serailizer = QuestionReSerializer(questions,many=True)
         return Response(serailizer.data)
+
+    @action(detail=True,methods=['get'])
+    def ratings(self,request,pk=None):
+        product = self.get_object()
+        
+        allow_rating = product.ratings.filter(user=self.request.user)
+
+        allow = False
+
+        if allow_rating:
+            allow = True
+        
+        ratings = product.ratings.all()
+        serializer = RatingSerializer(ratings,many=True)
+        return Response({'ratings':serializer.data,'allow':allow})
         
 
 class FilterViewset(viewsets.ViewSet):

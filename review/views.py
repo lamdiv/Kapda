@@ -1,9 +1,9 @@
-from rest_framework import viewsets,mixins,permissions
+from rest_framework import viewsets,mixins,permissions,status
 from rest_framework.response import Response
-from rest_framework import status
-from .models import Question,Answer
-from .serializers import QuestionSerializer,AnswerSerailzer
+from .models import Question,Answer,Rating
+from .serializers import QuestionSerializer,AnswerSerailzer,RatingSerializer
 from shop.models import Product
+from django.shortcuts import get_object_or_404
 
 class QuestionViewset(mixins.CreateModelMixin,viewsets.GenericViewSet):
     permission_classes = [permissions.IsAuthenticated]
@@ -35,4 +35,25 @@ class AnswerViewset(mixins.CreateModelMixin,viewsets.GenericViewSet):
         else:
             return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
+class RatingViewset(mixins.CreateModelMixin,mixins.UpdateModelMixin,viewsets.GenericViewSet):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = RatingSerializer
+    
+    def create(self,request):
+        serializer = RatingSerializer(data=request.data)
+        if serializer.is_valid():
+            product = Product.objects.get(id=serializer.data['product'])
+            rating = get_object_or_404(Rating,product=product,user=self.request.user)
             
+            if rating:
+                rating.stars = serializer.data['stars']
+                rating.review = serializer.data['review']
+                
+                rating.save()
+            
+                return Response({'status':'Rating done'})
+            return Response({'status':'You haven\'t bought this product yet'})
+        else:
+            return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+            Product.objects.get(id=serializer.data['product'])

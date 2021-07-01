@@ -1,4 +1,4 @@
-from .models import Question,Answer
+from .models import Question,Answer,Rating
 from rest_framework import serializers
 from users.serializers import UserNameSerializer
 
@@ -20,4 +20,10 @@ class QuestionReSerializer(serializers.ModelSerializer):
         model = Question
         fields = ['id','user','product','created','question','reply']
 
+
+class RatingSerializer(serializers.ModelSerializer):
+    user = UserNameSerializer(read_only=True)
+    class Meta:
+        model = Rating
+        fields = ['id','user','product','created','stars','review']
 

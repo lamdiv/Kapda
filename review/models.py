@@ -23,14 +23,17 @@ class Answer(models.Model):
         return self.answer
 
 class Rating(models.Model):
-    product = models.ForeignKey(Product,on_delete=models.CASCADE)
-    user= models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
-    stars = models.IntegerField(validators=[MinValueValidator(1),MaxValueValidator(5)])
+    product = models.ForeignKey(Product,related_name="ratings",on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
+    stars = models.IntegerField(validators=[MinValueValidator(1),MaxValueValidator(5)],null=True)
     review = models.TextField(null=True)
+    created = models.DateTimeField(auto_now=True)
 
     class Meta:
         unique_together = (('user','product'),)
         index_together = (('user','product'),)
 
     def __str__(self):
-        return str(self.stars)
+        return f'{self.user.email} review of {self.product}'
+
+
