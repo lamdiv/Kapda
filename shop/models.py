@@ -4,9 +4,11 @@ from django.template.defaultfilters import slugify
 class Category(models.Model):
     name = models.CharField(max_length=54, unique=True)
     slug = models.SlugField(unique=True)
+    image = models.ImageField(upload_to='categories/%Y/%m/%d', blank=True,null=True)
+    
 
     class Meta:
-        ordering = ('name',)
+        ordering = ('id',)
         verbose_name = 'category'
         verbose_name_plural = 'categories'
 
@@ -55,8 +57,8 @@ class Product(models.Model):
 
     _type = models.ForeignKey(Type,on_delete=models.CASCADE)
     color = models.ManyToManyField(Color,blank=True)
-    material = models.ForeignKey(Material,on_delete=models.SET_NULL,null=True)
-    brand = models.ForeignKey(Brand,on_delete=models.CASCADE,null=True)
+    material = models.ForeignKey(Material,on_delete=models.SET_NULL,blank=True,null=True)
+    brand = models.ForeignKey(Brand,on_delete=models.CASCADE,blank=True,null=True)
     size = models.ManyToManyField(Size,blank=True)
     name = models.CharField(max_length=200, db_index=True)
     slug = models.SlugField(max_length=200, db_index=True)

@@ -173,4 +173,4 @@ class CouponViewSet(mixins.CreateModelMixin,viewsets.GenericViewSet):
             except Coupon.DoesNotExist:
                 return Response({'status':'coupon isn\'t valid'})
         else:
-            return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)  

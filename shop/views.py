@@ -5,9 +5,7 @@ from django_filters import rest_framework as filters
 from rest_framework.decorators import action
 from .models import Category,Type,Color,Material,Brand,Product,Size
 from .serializers import (CategorySerializer,ProductSerializer,FilterSerializer)
-
-from review.models import Question,Answer
-from review.serializers import QuestionSerializer,QuestionReSerializer,RatingSerializer
+from review.serializers import QuestionReSerializer,RatingSerializer
 
 class CategoryViewset(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
@@ -19,7 +17,6 @@ class CategoryViewset(viewsets.ModelViewSet):
         else:
             permission_classes = [permissions.IsAdminUser]
         return [permission() for permission in permission_classes]
-
 
 
 class ProductFilter(filters.FilterSet):
